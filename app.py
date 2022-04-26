@@ -12,6 +12,7 @@ class LineNotifyService:
         self.content_type = ""
         self.tokens = []
         self.line_rul = ""
+        self.psw = ""
         self.is_init = False
         if self.init() is False:
             return
@@ -19,7 +20,7 @@ class LineNotifyService:
         self.app = Flask(__name__)
         self.app.add_url_rule("/check", methods=['POST'], view_func= self.check) 
         self.app.add_url_rule("/callback", methods=['POST'], view_func= self.callback) 
-        # self.app.add_url_rule("/action", methods=['POST'], view_func= self.action)
+        self.app.add_url_rule("/action", methods=['POST'], view_func= self.action)
 
         self.actions = {
             "notify": self.notify,
@@ -47,6 +48,8 @@ class LineNotifyService:
                     self.tokens = cfg[self.name]["tokens"]
                 if "line_url" in cfg[self.name]:
                     self.line_rul = cfg[self.name]["line_url"]
+                if "psw" in cfg[self.name]:
+                    self.psw = cfg[self.name]["psw"]
         except:
             Log("LineNotifyService init eror!")
             return False
@@ -85,6 +88,29 @@ class LineNotifyService:
                 Log("error " + response + " " + token + " " + str)
                 return False
         return True
+    
+    def isAllow(self, psw):
+        return psw == self.psw
+
+    def action(self):
+        try:
+            data = request.data
+            obj = json.loads(data)
+            print(obj)
+            print(type(obj))
+            psw = obj["psw"]
+            key = obj["key"]
+            if self.isAllow(psw) is True:
+                if self.actions.get(key) is not None:
+                    self.actions[key](obj["value"])
+                    Log(obj)
+                    return "ok"
+            else:
+                Log("action not Allow!")
+        except:
+            Log("action except!")
+        return "error!"
+    
 
 if __name__ == "__main__":
 
