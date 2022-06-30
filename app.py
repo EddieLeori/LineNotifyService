@@ -84,7 +84,7 @@ class LineNotifyService:
         msg = str
         for token in self.tokens:
             response = self.notify(token, str)
-            if response is not 200:
+            if response != 200:
                 Log("error " + response + " " + token + " " + str)
                 return False
         return True
