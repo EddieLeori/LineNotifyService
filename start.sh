@@ -1,3 +1,3 @@
 #!/bin/bash
-nohup python3 app &
+nohup python app >> log.txt 2>&1 &
 
