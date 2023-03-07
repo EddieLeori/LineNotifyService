@@ -1,7 +1,7 @@
 {
 	"LineNotifyService":{
 		"host": "0.0.0.0",
-		"port":5124,
+		"port":5125,
 		"Content-Type": "application/x-www-form-urlencoded",
 		"secrt":"your_secrt",
 		"tokens":["your_token"],
