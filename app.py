@@ -24,7 +24,8 @@ class LineNotifyService:
 
         self.actions = {
             "notify": self.notify,
-            "notifyAll": self.notifyAll
+            "notifyAll": self.notifyAll,
+            "notifyImgs": self.notifyImgs
         }
 
         self.is_init = True
@@ -81,13 +82,50 @@ class LineNotifyService:
         return r.status_code
 
     def notifyAll(self, str):
-        msg = str
         for token in self.tokens:
             response = self.notify(token, str)
             if response != 200:
-                Log("error " + response + " " + token + " " + str)
+                Log("error:response={0}, token={1}, str={2}".format(response, token, str))
                 return False
         return True
+    
+    def notifyImgs(self, strdata):
+        try:
+            imgs = eval(strdata)
+            image_files = []
+            # for i, url in enumerate(imgs):
+            #     # image_files.append(\
+            #     #     ("imageFile" + str(i + 1), (url.split("/")[-1], requests.get(url).content))
+            #     #     )
+            #     name = [s for s in url.split("/") if "?" in s][0].split("?")[0]
+            #     image_files.append(\
+            #         ("imageFile" + str(i + 1), (name, requests.get(url).content, 'image/png'))
+            #         )
+            for img in imgs:
+                for token in self.tokens:
+                    headers = {
+                        "Authorization": "Bearer " + token
+                        # "Content-Type": "multipart/form-data"
+                    }
+                    r = requests.post(
+                        self.line_rul, 
+                        headers = headers, 
+                        params = {
+                            "message": "For you!",
+                            "imageThumbnail": img,  # 設定圖片縮圖 URL
+                            "imageFullsize": img,  # 設定圖片原始大小 URL
+                            },
+                        files = image_files
+                        )
+                    if r.status_code != 200:
+                        Log("notifyImgs error:{0}", r.status_code)
+                        return False
+            return True
+        except Exception as e:
+            Log("notifyImgs error:" + str(e))
+            return False
+        
+        
     
     def isAllow(self, psw):
         return psw == self.psw
@@ -107,8 +145,8 @@ class LineNotifyService:
                     return "ok"
             else:
                 Log("action not Allow!")
-        except:
-            Log("action except!")
+        except Exception as e:
+            Log("action except!:{0}".format(e))
         return "error!"
     
 

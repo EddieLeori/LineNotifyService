@@ -3,12 +3,8 @@
 		"host": "0.0.0.0",
 		"port":5125,
 		"Content-Type": "application/x-www-form-urlencoded",
-		"secrt":"your_secrt",
-		"tokens":["your_token"],
+		"tokens":["your_t"],
 		"line_url":"https://notify-api.line.me/api/notify",
-		"psw":"!@34001?>f!&&",
-		"notify_token":"your_token",
-		"client_id": "client_id",
-		"client_secret": "client_secret"
+		"psw":"!@34001?>f!&&"
 	}
 }
