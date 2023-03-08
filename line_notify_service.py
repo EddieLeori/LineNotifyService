@@ -93,14 +93,6 @@ class LineNotifyService:
         try:
             imgs = eval(strdata)
             image_files = []
-            # for i, url in enumerate(imgs):
-            #     # image_files.append(\
-            #     #     ("imageFile" + str(i + 1), (url.split("/")[-1], requests.get(url).content))
-            #     #     )
-            #     name = [s for s in url.split("/") if "?" in s][0].split("?")[0]
-            #     image_files.append(\
-            #         ("imageFile" + str(i + 1), (name, requests.get(url).content, 'image/png'))
-            #         )
             for img in imgs:
                 for token in self.tokens:
                     headers = {
@@ -125,8 +117,6 @@ class LineNotifyService:
             Log("notifyImgs error:" + str(e))
             return False
         
-        
-    
     def isAllow(self, psw):
         return psw == self.psw
 
@@ -148,11 +138,5 @@ class LineNotifyService:
         except Exception as e:
             Log("action except!:{0}".format(e))
         return "error!"
-    
-
-if __name__ == "__main__":
-
-    service = LineNotifyService()
-    service.run()
 
 

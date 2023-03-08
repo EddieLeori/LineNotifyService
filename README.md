@@ -18,6 +18,8 @@ using python3.8.2
 >
 `pip3 install -r requirements.txt`
 >
+`git submodule update --init --recursive`
+>
 2. Copy file and Rename to option.json from the option_sample.json
 >
 `cp option_sample.json option.json`

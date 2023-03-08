@@ -1,4 +1,4 @@
 #!/bin/bash
 mkdir -p log
-nohup python app.py >> log.txt 2>&1 &
+nohup python3 main.py >> log.txt 2>&1 &
 
